@@ -81,6 +81,35 @@ namespace Player
 		}
 	}
 
+	sf::Vector2i BodyPart::getPrevPosition()
+	{
+		switch (direction)
+		{
+		case Direction::UP:
+			return getNextPositionDown();
+		case Direction::DOWN:
+			return getNextPositionUp();
+		case Direction::RIGHT:
+			return getNextPositionLeft();
+		case Direction::LEFT:
+			return getNextPositionRight();
+		default:
+			return grid_position;
+		}
+	}
+
+	void BodyPart::setPosition(sf::Vector2i position)
+	{
+		grid_position = position;
+	}
+
+	void BodyPart::setDirection(Direction direction)
+	{
+		previous_direction = this->direction;
+		this->direction = direction;
+	}
+
+
 	sf::Vector2i BodyPart::getNextPositionDown()
 	{
 		return sf::Vector2i(grid_position.x, (grid_position.y + 1) % (LevelModel::number_of_rows));
@@ -121,9 +150,9 @@ namespace Player
 		return direction;
 	}
 
-	void BodyPart::setDirection(Direction new_direction)
+	Direction BodyPart::getPreviousDirection()
 	{
-		direction = new_direction;
+		return previous_direction;
 	}
 
 	sf::Vector2i BodyPart::getPosition()
